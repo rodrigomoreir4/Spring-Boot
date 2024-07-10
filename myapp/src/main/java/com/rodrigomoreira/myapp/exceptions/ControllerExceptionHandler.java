@@ -54,6 +54,8 @@ public class ControllerExceptionHandler {
             newMessage = "Fill in all fields";
         } else if (message.contains("domain.courses")){
             newMessage = "The course must have a name";
+        } else {
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
         ExceptionDTO exceptionDTO = new ExceptionDTO(newMessage);
         return ResponseEntity.badRequest().body(exceptionDTO);
@@ -70,7 +72,7 @@ public class ControllerExceptionHandler {
         ExceptionDTO exceptionDTO = new ExceptionDTO(exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionDTO);
     }
-
+    
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> threatGeneralException(Exception exception){
         ExceptionDTO exceptionDTO = new ExceptionDTO(exception.getMessage());
