@@ -32,9 +32,9 @@ public class AppConfig implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-        Profile admin = new Profile("rodrigomoreira", encryptedPassword, ProfileRole.MASTER);
+        Profile master = new Profile("rodrigomoreira", encryptedPassword, ProfileRole.MASTER);
 
-        profileRepository.saveAll(Arrays.asList(admin));
+        profileRepository.saveAll(Arrays.asList(master));
 
     }
 }

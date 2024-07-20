@@ -25,6 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -32,12 +33,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rodrigomoreira.myapp.config.AppConfig;
 import com.rodrigomoreira.myapp.domain.users.User;
 import com.rodrigomoreira.myapp.dtos.UpdateRequest;
+import com.rodrigomoreira.myapp.infra.security.SecurityConfigurations;
+import com.rodrigomoreira.myapp.infra.security.TokenService;
+import com.rodrigomoreira.myapp.repositories.ProfileRepository;
 import com.rodrigomoreira.myapp.services.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @WebMvcTest(UserController.class)
-@Import({AppConfig.class})
+@Import({AppConfig.class, SecurityConfigurations.class})
+@WithMockUser(username = "admin", roles = "ADMIN")
 public class UserControllerTest {
 
     @Autowired
@@ -48,6 +53,12 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private ProfileRepository profileRepository;
+
+    @MockBean
+    private TokenService tokenService;
     
     @Test
     void createUser_WithValidData_ReturnsCreated() throws Exception{

@@ -21,17 +21,22 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rodrigomoreira.myapp.config.AppConfig;
 import com.rodrigomoreira.myapp.domain.courses.Course;
+import com.rodrigomoreira.myapp.infra.security.SecurityConfigurations;
+import com.rodrigomoreira.myapp.infra.security.TokenService;
+import com.rodrigomoreira.myapp.repositories.ProfileRepository;
 import com.rodrigomoreira.myapp.services.CourseService;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @WebMvcTest(CourseController.class)
-@Import({AppConfig.class})
+@Import({AppConfig.class, SecurityConfigurations.class})
+@WithMockUser(username = "admin", roles = "ADMIN")
 public class CourseControllerTest {
 
     @Autowired
@@ -42,6 +47,12 @@ public class CourseControllerTest {
 
     @MockBean
     private CourseService courseService;
+
+    @MockBean
+    private ProfileRepository profileRepository;
+
+    @MockBean
+    private TokenService tokenService;
 
     @Test
     void testCreateCourse() throws Exception {
