@@ -37,6 +37,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/courses").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/courses").hasRole("ADMIN")
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()                    
                     )
                 .headers(headers -> headers
